@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>あなたにピッタリの証券口座診断</title>
+    <meta name="description" content="約1分で完了。あなたに最適な証券口座を無料で診断します。">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 背景画像コンテナ -->
+        <div class="bg-image"></div>
+        <div class="bg-overlay"></div>
+
+        <main class="container">
+            <!-- ランディングページ -->
+            <section id="landing" class="page active">
+                <div class="hero-content">
+                    <h1 class="catchphrase">投資を、<br>難しく考えなくていい。</h1>
+                    <p class="sub-catchphrase">あなたにピッタリの証券口座診断</p>
+                    
+                    <div class="badges">
+                        <span class="badge">約1分で完了</span>
+                        <span class="badge">5問の簡単な質問</span>
+                        <span class="badge">個人情報不要</span>
+                    </div>
+
+                    <button id="start-btn" class="btn btn-primary btn-large">
+                        無料で診断する <span class="arrow">→</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 質問ページ -->
+            <section id="question" class="page hidden">
+                <div class="question-container glass-card">
+                    <div class="progress-header">
+                        <span class="progress-text">質問 <span id="current-q">1</span>/<span id="total-q">5</span></span>
+                        <span id="progress-percent" class="progress-percent">20%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="progress-bar" class="progress-bar-fill"></div>
+                    </div>
+
+                    <p id="back-btn" class="back-link hidden">← 前の質問に戻る</p>
+
+                    <div class="question-content">
+                        <div class="q-number-circle"><span id="q-circle-num">1</span></div>
+                        <h2 id="question-text" class="question-text">質問文がここに入ります</h2>
+                        
+                        <div id="options-container" class="options-grid">
+                            <!-- 選択肢ボタンがJavascriptで生成されます -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ローディング画面 -->
+            <section id="loading" class="page hidden">
+                <div class="loading-container glass-card">
+                    <div class="spinner"></div>
+                    <h2>診断結果を分析中...</h2>
+                    <p>あなたに最適な証券口座を探しています</p>
+                </div>
+            </section>
+
+            <!-- 結果ページ -->
+            <section id="result" class="page hidden">
+                <div class="result-header">
+                    <h2>あなたにピッタリの<br><span class="highlight-text">証券口座タイプ</span></h2>
+                    <p>あなたの回答を分析した結果、以下の証券口座がおすすめです</p>
+                </div>
+                
+                <!-- 結果コンテンツ全体を囲むGlassmorphismカード -->
+                <div class="result-container glass-card mb-4">
+                    <!-- トップマッチヘッダー -->
+                    <div class="top-match-header">
+                        <div class="match-bar-wrap">
+                            <div class="match-bar-bg">
+                                <div id="top-match-bar" class="match-bar-fill"></div>
+                            </div>
+                            <span id="top-match-percent" class="match-percent-text">おすすめ度 95%</span>
+                        </div>
+                        <h3 id="result-type-title" class="result-type-title">タイプタイトル</h3>
+                        <p id="result-type-badge" class="result-type-sub">TYPE CATEGORY</p>
+                        <div class="result-description-box">
+                            <p id="result-description">全体の説明文が入ります。</p>
+                        </div>
+                        <p class="suggestion-text">あなたにおすすめのサービス</p>
+                    </div>
+
+                    <!-- おすすめランキング (Top 3) -->
+                    <div id="ranking-container" class="ranking-list">
+                        <!-- Javascriptで生成 -->
+                    </div>
+                </div>
+                
+                <div class="retry-action">
+                    <button id="retry-btn" class="btn btn-secondary">もう一度診断する</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- モジュールのインポート -->
+    <script type="module" src="src/script.js"></script>
+</body>
+</html>
+
+/* CSS Variables */
+:root {
+  --primary-color: #26c6da;
+  --primary-hover: #00bcd4;
+  --text-main: #333333;
+  --text-light: #666666;
+  --bg-dark: rgba(0, 0, 0, 0.4);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  --card-bg: rgba(245, 247, 250, 0.7);
+  --transition-speed: 0.3s;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+  color: var(--text-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+  background-color: #f0f4f8; /* fallback bg */
+}
+
+/* Background image setup (Bright Forest) */
+.bg-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  /* 高画質の明るい森の画像 */
+  background: url('https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center center / cover no-repeat;
+  z-index: -2;
+}
+
+/* Soft overlay to make text readable */
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.4) 100%);
+  z-index: -1;
+}
+
+/* Common Layout */
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Display Toggling */
+.page {
+  display: none;
+  animation: fadeIn 0.5s ease;
+  width: 100%;
+}
+
+.page.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Glassmorphism Classes */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  padding: 32px 24px;
+  width: 100%;
+}
+
+/* Buttons */
+.btn {
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all var(--transition-speed);
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 0 4px 15px rgba(38, 198, 218, 0.4);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 188, 212, 0.5);
+}
+
+.btn-large {
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  width: 100%;
+  max-width: 300px;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-light);
+  border: 1px solid #ccc;
+  padding: 12px 24px;
+}
+
+.btn-secondary:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+/* --- LANDING PAGE --- */
+.hero-content {
+  text-align: center;
+  color: #222; /* Darker text for readability against light overlay */
+}
+
+.catchphrase {
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 10px rgba(255,255,255,0.8);
+}
+
+.sub-catchphrase {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+.badges {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.badge {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.8);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+}
+
+/* --- QUESTION PAGE --- */
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--primary-color);
+  width: 20%;
+  transition: width 0.4s ease;
+}
+
+.back-link {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.question-content {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.q-number-circle {
+  width: 40px;
+  height: 40px;
+  background: #e0f7fa;
+  color: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0 auto 16px;
+}
+
+.question-text {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 32px;
+  color: #222;
+}
+
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option-btn {
+  background: var(--card-bg);
+  border: 1px solid rgba(0,0,0,0.05);
+  padding: 18px 20px;
+  border-radius: 12px;
+  text-align: left;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-main);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.option-btn::after {
+  content: '→';
+  color: #ccc;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
+}
+
+.option-btn:hover {
+  background: white;
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transform: translateY(-2px);
+}
+
+.option-btn:hover::after {
+  color: var(--primary-color);
+  transform: translateX(4px);
+}
+
+/* --- LOADING PAGE --- */
+.loading-container {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e0e0e0;
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  animation: spin 1s linear infinite;
+}
+
+/* --- RESULT PAGE --- */
+.result-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.result-header h2 {
+  font-size: 1.5rem;
+  color: #222;
+  margin-bottom: 8px;
+}
+
+.highlight-text {
+  color: var(--primary-color);
+  font-size: 1.8rem;
+}
+
+.result-header p {
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.top-match-header {
+  margin-bottom: 32px;
+}
+
+.match-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.match-bar-bg {
+  flex: 1;
+  height: 6px;
+  background: #eee;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.match-bar-fill {
+  height: 100%;
+  background: var(--primary-color);
+  width: 0%; /* JS for anim */
+  border-radius: 3px;
+}
+
+.match-percent-text {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.result-type-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #111;
+}
+
+.result-type-sub {
+  font-size: 0.8rem;
+  color: #888;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.result-description-box {
+  background: var(--card-bg);
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 24px;
+}
+
+.suggestion-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ranking-card {
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.rc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.rc-rank {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.rc-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.rc-match {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.rc-subtitle {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.rc-features {
+  list-style: none;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  color: #444;
+}
+
+.rc-features li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 6px;
+}
+
+.rc-features li::before {
+  content: '・';
+  position: absolute;
+  left: 0;
+  color: #888;
+}
+
+.cta-btn {
+  background: var(--primary-color);
+  color: white;
+  text-align: center;
+  padding: 14px;
+  border-radius: 50px;
+  display: block;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.cta-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(38, 198, 218, 0.4);
+}
+
+.mb-4 {
+  margin-bottom: 24px;
+}
+
+.retry-action {
+  text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
