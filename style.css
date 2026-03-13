@@ -481,6 +481,15 @@ body {
   border: 1px solid rgba(0,0,0,0.05);
   border-radius: 16px;
   padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.first-place-card {
+  background: rgba(255,255,255,0.85);
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 8px 24px rgba(38, 198, 218, 0.15);
+  transform: scale(1.01);
+  margin-bottom: 10px;
 }
 
 .rc-header {
@@ -494,6 +503,18 @@ body {
   font-size: 0.8rem;
   color: var(--primary-color);
   font-weight: 700;
+}
+
+.rc-rank.first-rank-text {
+  font-size: 0.95rem;
+  color: #e65100; /* Deep orange/gold for emphasis */
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.crown-icon {
+  font-size: 1.1rem;
 }
 
 .rc-name {

@@ -28,10 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const questionContentWrapper = document.getElementById('question-content-wrapper');
 
     // Result UI
-    const topMatchBar = document.getElementById('top-match-bar');
-    const topMatchPercent = document.getElementById('top-match-percent');
+
     const resultTypeTitle = document.getElementById('result-type-title');
-    const resultTypeBadge = document.getElementById('result-type-badge');
     const resultDescription = document.getElementById('result-description');
     const rankingContainer = document.getElementById('ranking-container');
 
@@ -225,18 +223,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Top match header
         resultTypeTitle.textContent = top.title;
-        resultTypeBadge.textContent = top.badge;
         resultDescription.textContent = top.description;
         
-        topMatchPercent.textContent = `おすすめ度 ${top.percent}%`;
+
 
         // Render Top 3 rankings
         rankingContainer.innerHTML = '';
         const top3 = sortedResults.slice(0, 3);
 
         top3.forEach((item, index) => {
+            const isFirst = index === 0;
+            const cardClass = isFirst ? 'ranking-card first-place-card' : 'ranking-card';
+            const rankText = isFirst ? '<span class="crown-icon">👑</span> あなたに最もおすすめ（第1位）' : `おすすめ第${index + 1}位`;
+
             const card = document.createElement('div');
-            card.className = 'ranking-card';
+            card.className = cardClass;
             
             let featuresHtml = '';
             item.features.forEach(f => {
@@ -246,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `
                 <div class="rc-header">
                     <div>
-                        <div class="rc-rank">おすすめ第${index + 1}位</div>
+                        <div class="rc-rank ${isFirst ? 'first-rank-text' : ''}">${rankText}</div>
                         <div class="rc-name">${item.name}</div>
                     </div>
                     <div>
@@ -268,7 +269,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         setTimeout(() => {
-            topMatchBar.style.width = top.percent + '%';
             top3.forEach((item, index) => {
                 const bar = document.getElementById(`rc-match-bar-${index}`);
                 if (bar) bar.style.width = item.percent + '%';
