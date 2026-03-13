@@ -18,20 +18,23 @@
         <main class="container">
             <!-- ランディングページ -->
             <section id="landing" class="page active">
-                <div class="hero-content">
-                    <h1 class="catchphrase">投資を、<br>難しく考えなくていい。</h1>
-                    <p class="sub-catchphrase">あなたにピッタリの証券口座診断</p>
-                    
-                    <div class="badges">
-                        <span class="badge">約1分で完了</span>
-                        <span class="badge">5問の簡単な質問</span>
-                        <span class="badge">個人情報不要</span>
-                    </div>
+                <div id="top-page" class="page active">
+        <!-- Hero Section wrapped in a glass card for visibility -->
+        <div class="hero">
+            <div class="title-card title-card-fadein">
+                <h1>投資を、難しく考えなくていい。</h1>
+                <p class="subtitle">あなたにピッタリの証券口座診断</p>
+            </div>
+            
+            <div class="features features-fadein">
+                <div class="feature-item"><span class="icon">✓</span> たった1分で完了</div>
+                <div class="feature-item"><span class="icon">✓</span> 5問の簡単な質問</div>
+                <div class="feature-item"><span class="icon">✓</span> 個人情報不要</div>
+            </div>
 
-                    <button id="start-btn" class="btn btn-primary btn-large">
-                        無料で診断する <span class="arrow">→</span>
-                    </button>
-                </div>
+            <button id="start-btn" class="main-action-btn start-fadein">無料で診断スタート</button>
+        </div>
+    </div>
             </section>
 
             <!-- 質問ページ -->
@@ -47,7 +50,7 @@
 
                     <p id="back-btn" class="back-link hidden">← 前の質問に戻る</p>
 
-                    <div class="question-content">
+                    <div id="question-content-wrapper" class="question-content slide-active">
                         <div class="q-number-circle"><span id="q-circle-num">1</span></div>
                         <h2 id="question-text" class="question-text">質問文がここに入ります</h2>
                         
@@ -69,9 +72,11 @@
 
             <!-- 結果ページ -->
             <section id="result" class="page hidden">
+                <div id="confetti-container"></div>
+                
                 <div class="result-header">
-                    <h2>あなたにピッタリの<br><span class="highlight-text">証券口座タイプ</span></h2>
-                    <p>あなたの回答を分析した結果、以下の証券口座がおすすめです</p>
+                    <h2><span class="text-bg text-center">あなたにピッタリの、<br><span class="highlight-text">証券口座タイプ</span></span></h2>
+                    <p><span class="text-bg-sub">あなたの回答を分析した結果、以下の証券口座がおすすめです</span></p>
                 </div>
                 
                 <!-- 結果コンテンツ全体を囲むGlassmorphismカード -->
@@ -98,11 +103,41 @@
                     </div>
                 </div>
                 
+                <div class="final-desc-container text-center mb-4">
+                    <p class="final-desc text-bg-sub">おすすめの理由や詳細な情報は、各証券会社の公式サイトでご確認ください。</p>
+                </div>
+                
+                <!-- Reference aligned Share Section (Moved inside result page) -->
+                <div class="share-section">
+                    <p class="share-title"><span class="share-emoji">📢</span> 結果をシェアする</p>
+                    <p class="share-desc">友達にも診断を教えてあげよう！</p>
+                    <div class="share-buttons">
+                        <button id="share-x" class="share-icon-btn">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="share-svg" fill="currentColor"><g><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 3.827H5.045z"></path></g></svg>
+                            ポストする
+                        </button>
+                        <button id="share-line" class="share-icon-btn">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" alt="LINE" class="share-img">
+                            LINEで送る
+                        </button>
+                        <button id="share-copy" class="share-icon-btn">
+                            <svg viewBox="0 0 24 24" class="share-svg-stroke" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            リンクをコピー
+                        </button>
+                    </div>
+                </div>
+
                 <div class="retry-action">
-                    <button id="retry-btn" class="btn btn-secondary">もう一度診断する</button>
+                    <button id="retry-btn" class="retry-btn shadow-btn">もう一度診断する</button>
                 </div>
             </section>
         </main>
+    </div>
+    
+    <!-- True bottom affiliate note -->
+    <div class="footer-affiliate">
+        <p>※当サイトはアフィリエイトプログラムに参加しています。</p>
+        <p class="copyright">© 2026 あなたにピッタリの証券口座診断. All Rights Reserved.</p>
     </div>
 
     <!-- モジュールのインポート -->
