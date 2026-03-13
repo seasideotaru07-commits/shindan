@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>あなたにピッタリの証券口座診断</title>
+    <meta name="description" content="約1分で完了。あなたに最適な証券口座を無料で診断します。">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 背景画像コンテナ -->
+        <div class="bg-image"></div>
+        <div class="bg-overlay"></div>
+
+        <main class="container">
+            <!-- ランディングページ -->
+            <section id="landing" class="page active">
+                <div id="top-page" class="page active">
+        <!-- Hero Section wrapped in a glass card for visibility -->
+        <div class="hero">
+            <div class="title-card title-card-fadein">
+                <h1>投資を、難しく考えなくていい。</h1>
+                <p class="subtitle">あなたにピッタリの証券口座診断</p>
+            </div>
+            
+            <div class="features features-fadein">
+                <div class="feature-item"><span class="icon">✓</span> たった1分で完了</div>
+                <div class="feature-item"><span class="icon">✓</span> 5問の簡単な質問</div>
+                <div class="feature-item"><span class="icon">✓</span> 個人情報不要</div>
+            </div>
+
+            <button id="start-btn" class="main-action-btn start-fadein">無料で診断スタート</button>
+        </div>
+    </div>
+            </section>
+
+            <!-- 質問ページ -->
+            <section id="question" class="page hidden">
+                <div class="question-container glass-card">
+                    <div class="progress-header">
+                        <span class="progress-text">質問 <span id="current-q">1</span>/<span id="total-q">5</span></span>
+                        <span id="progress-percent" class="progress-percent">20%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="progress-bar" class="progress-bar-fill"></div>
+                    </div>
+
+                    <p id="back-btn" class="back-link hidden">← 前の質問に戻る</p>
+
+                    <div id="question-content-wrapper" class="question-content slide-active">
+                        <div class="q-number-circle"><span id="q-circle-num">1</span></div>
+                        <h2 id="question-text" class="question-text">質問文がここに入ります</h2>
+                        
+                        <div id="options-container" class="options-grid">
+                            <!-- 選択肢ボタンがJavascriptで生成されます -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ローディング画面 -->
+            <section id="loading" class="page hidden">
+                <div class="loading-container glass-card">
+                    <div class="spinner"></div>
+                    <h2>診断結果を分析中...</h2>
+                    <p>あなたに最適な証券口座を探しています</p>
+                </div>
+            </section>
+
+            <!-- 結果ページ -->
+            <section id="result" class="page hidden">
+                <div id="confetti-container"></div>
+                
+                <div class="result-header">
+                    <h2><span class="text-bg text-center">あなたにピッタリの、<br><span class="highlight-text">証券口座タイプ</span></span></h2>
+                    <p><span class="text-bg-sub">あなたの回答を分析した結果、以下の証券口座がおすすめです</span></p>
+                </div>
+                
+                <!-- 結果コンテンツ全体を囲むGlassmorphismカード -->
+                <div class="result-container glass-card mb-4">
+                    <!-- トップマッチヘッダー -->
+                    <div class="top-match-header">
+                        <div class="match-bar-wrap">
+                            <div class="match-bar-bg">
+                                <div id="top-match-bar" class="match-bar-fill"></div>
+                            </div>
+                            <span id="top-match-percent" class="match-percent-text">おすすめ度 95%</span>
+                        </div>
+                        <h3 id="result-type-title" class="result-type-title">タイプタイトル</h3>
+                        <p id="result-type-badge" class="result-type-sub">TYPE CATEGORY</p>
+                        <div class="result-description-box">
+                            <p id="result-description">全体の説明文が入ります。</p>
+                        </div>
+                        <p class="suggestion-text">あなたにおすすめのサービス</p>
+                    </div>
+
+                    <!-- おすすめランキング (Top 3) -->
+                    <div id="ranking-container" class="ranking-list">
+                        <!-- Javascriptで生成 -->
+                    </div>
+                </div>
+                
+                <div class="final-desc-container text-center mb-4">
+                    <p class="final-desc text-bg-sub">おすすめの理由や詳細な情報は、各証券会社の公式サイトでご確認ください。</p>
+                </div>
+                
+                <!-- Reference aligned Share Section (Moved inside result page) -->
+                <div class="share-section">
+                    <p class="share-title"><span class="share-emoji">📢</span> 結果をシェアする</p>
+                    <p class="share-desc">友達にも診断を教えてあげよう！</p>
+                    <div class="share-buttons">
+                        <button id="share-x" class="share-icon-btn">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="share-svg" fill="currentColor"><g><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 3.827H5.045z"></path></g></svg>
+                            ポストする
+                        </button>
+                        <button id="share-line" class="share-icon-btn">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" alt="LINE" class="share-img">
+                            LINEで送る
+                        </button>
+                        <button id="share-copy" class="share-icon-btn">
+                            <svg viewBox="0 0 24 24" class="share-svg-stroke" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            リンクをコピー
+                        </button>
+                    </div>
+                </div>
+
+                <div class="retry-action">
+                    <button id="retry-btn" class="retry-btn shadow-btn">もう一度診断する</button>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- True bottom affiliate note -->
+    <div class="footer-affiliate">
+        <p>※当サイトはアフィリエイトプログラムに参加しています。</p>
+        <p class="copyright">© 2026 あなたにピッタリの証券口座診断. All Rights Reserved.</p>
+    </div>
+
+    <!-- モジュールのインポート -->
+    <script type="module" src="src/script.js"></script>
+</body>
+</html>
