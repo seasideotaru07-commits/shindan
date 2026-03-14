@@ -169,24 +169,26 @@ body {
 
 .features {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;        /* 横並びにする */
+  flex-wrap: wrap;           /* 画面が狭い時は折り返す */
+  justify-content: center;   /* 中央揃え */
   gap: 12px;
   margin-bottom: 40px;
-  align-items: center;
 }
 
 .feature-item {
-  background: rgba(255,255,255,0.65);
-  backdrop-filter: blur(6px);
-  padding: 10px 24px;
+  background: rgba(255,255,255,0.75); /* 少し白を強めて視認性アップ */
+  backdrop-filter: blur(8px);
+  padding: 8px 16px;
   border-radius: 50px;
   font-weight: 700;
+  font-size: 0.9rem;         /* 横並びのために少しサイズ調整 */
   color: #333;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
-  border: 1px solid rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.9);
 }
 
 .feature-item .icon {
@@ -195,24 +197,56 @@ body {
 }
 
 .main-action-btn {
-  background: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color) 0%, #00acc1 100%);
   color: white;
   border: none;
   border-radius: 50px;
-  padding: 18px 40px;
-  font-size: 1.25rem;
-  font-weight: bold;
+  padding: 20px 48px;        /* ボタンを大きく */
+  font-size: 1.4rem;         /* 文字も大きく */
+  font-weight: 800;          /* より太く */
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(38, 198, 218, 0.4);
+  box-shadow: 0 8px 25px rgba(38, 198, 218, 0.4);
   transition: all 0.3s;
   width: 100%;
-  max-width: 320px;
+  max-width: 360px;          /* 最大幅も広げる */
   display: block;
   margin: 0 auto;
+  position: relative;
+  overflow: hidden;          /* 光のハミ出しを防ぐ */
+  z-index: 1;
+  animation: pulse 3s infinite; /* ふわふわ脈打つアニメーション */
 }
+
+/* キラッと光るシャインエフェクト */
+.main-action-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg);
+  animation: shine 3s infinite;
+  z-index: 2;
+}
+
 .main-action-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 188, 212, 0.5);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(0, 188, 212, 0.6);
+}
+
+/* アニメーション定義 */
+@keyframes shine {
+  0% { left: -100%; }
+  20% { left: 200%; }
+  100% { left: 200%; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
 }
 
 /* Affiliate Footer */
