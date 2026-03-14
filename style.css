@@ -438,27 +438,78 @@ body {
   color: var(--primary-color);
 }
 
-.result-type-title {
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin-bottom: 4px;
-  color: #111;
+.first-place-hero {
+  background: rgba(255,255,255,0.9);
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 8px 32px rgba(38, 198, 218, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
 }
 
-.result-type-sub {
-  font-size: 0.8rem;
-  color: #888;
-  letter-spacing: 1px;
+.fp-badge {
+  display: inline-block;
+  background: #fff8e1;
+  color: #f57c00;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 6px 16px;
+  border-radius: 50px;
+  margin-bottom: 12px;
+  border: 1px solid #ffe082;
+}
+
+.fp-name {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 8px;
+}
+
+.fp-match-rate {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 600;
   margin-bottom: 16px;
 }
 
-.result-description-box {
-  background: var(--card-bg);
+.fp-match-rate .highlight-percent {
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  font-weight: 800;
+}
+
+.fp-catchphrase {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #ddd;
+}
+
+.fp-description {
+  font-size: 0.95rem;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.fp-features {
+  text-align: left;
+  background: #fcfcfc;
   padding: 16px;
   border-radius: 12px;
-  font-size: 0.9rem;
-  color: #444;
-  margin-bottom: 24px;
+  border: 1px solid #f0f0f0;
+}
+
+.fp-cta {
+  font-size: 1.05rem;
+  padding: 16px;
+  box-shadow: 0 4px 15px rgba(38, 198, 218, 0.3);
 }
 
 .suggestion-text {

@@ -29,14 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Result UI
 
-    const resultTypeTitle = document.getElementById('result-type-title');
-    const resultDescription = document.getElementById('result-description');
+    const topMatchContainer = document.getElementById('top-match-container');
     const rankingContainer = document.getElementById('ranking-container');
 
     // State
     let currentQuestionIndex = 0;
     let scores = {};
     const totalQuestions = questionsData.length;
+    let sortedResultsForShare = null;
 
     totalQEl.textContent = totalQuestions;
 
@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add small jitter so they aren't exactly the same if tied
         // (Just relies on their existing sort order to place them)
 
+        sortedResultsForShare = sortedResults; // シェア用に保存
         renderResultPage(sortedResults);
     }
 
@@ -221,23 +222,40 @@ document.addEventListener('DOMContentLoaded', () => {
         createConfetti();
         const top = sortedResults[0];
 
-        // Top match header
-        resultTypeTitle.textContent = top.title;
-        resultDescription.textContent = top.description;
-        
+        // 1位のレンダリング (Top Match Hero)
+        let topFeaturesHtml = '';
+        top.features.forEach(f => {
+            topFeaturesHtml += `<li>${f}</li>`;
+        });
 
+        topMatchContainer.innerHTML = `
+            <div class="first-place-hero">
+                <div class="fp-badge"><span class="crown-icon">👑</span> あなたに最もおすすめ（第1位）</div>
+                <h3 class="fp-name">${top.name}</h3>
+                <div class="fp-match-rate">
+                    おすすめ度 <span class="highlight-percent">${top.percent}%</span>
+                </div>
+                <div class="fp-catchphrase">${top.title}</div>
+                <div class="fp-description">${top.description}</div>
+                <ul class="rc-features fp-features">
+                    ${topFeaturesHtml}
+                </ul>
+                <a href="${top.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="cta-btn fp-cta">
+                    今すぐ口座開設（無料） →
+                </a>
+            </div>
+        `;
 
-        // Render Top 3 rankings
+        // Render Top 2 & 3 rankings
         rankingContainer.innerHTML = '';
-        const top3 = sortedResults.slice(0, 3);
+        const otherRanks = sortedResults.slice(1, 3);
 
-        top3.forEach((item, index) => {
-            const isFirst = index === 0;
-            const cardClass = isFirst ? 'ranking-card first-place-card' : 'ranking-card';
-            const rankText = isFirst ? '<span class="crown-icon">👑</span> あなたに最もおすすめ（第1位）' : `おすすめ第${index + 1}位`;
+        otherRanks.forEach((item, index) => {
+            const actualRank = index + 2; // 2位・3位
+            const rankText = `おすすめ第${actualRank}位`;
 
             const card = document.createElement('div');
-            card.className = cardClass;
+            card.className = 'ranking-card';
             
             let featuresHtml = '';
             item.features.forEach(f => {
@@ -247,13 +265,13 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `
                 <div class="rc-header">
                     <div>
-                        <div class="rc-rank ${isFirst ? 'first-rank-text' : ''}">${rankText}</div>
+                        <div class="rc-rank">${rankText}</div>
                         <div class="rc-name">${item.name}</div>
                     </div>
                     <div>
                         <div class="rc-match">${item.percent}%</div>
                         <div class="rc-match-bar-wrap">
-                            <div class="rc-match-bar-fill" style="width: 0%;" id="rc-match-bar-${index}"></div>
+                            <div class="rc-match-bar-fill" style="width: 0%;" id="rc-match-bar-${actualRank}"></div>
                         </div>
                     </div>
                 </div>
@@ -269,8 +287,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         setTimeout(() => {
-            top3.forEach((item, index) => {
-                const bar = document.getElementById(`rc-match-bar-${index}`);
+            otherRanks.forEach((item, index) => {
+                const actualRank = index + 2;
+                const bar = document.getElementById(`rc-match-bar-${actualRank}`);
                 if (bar) bar.style.width = item.percent + '%';
             });
         }, 400);
@@ -308,8 +327,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 結果をシェアするボタンの処理（個別）
     const getShareText = () => {
-        const resultText = document.getElementById('result-type-title').textContent;
-        return `私の証券口座診断結果は「${resultText}」でした！あなたも1分で最適な証券口座を診断しよう！`;
+        // トップのタイトル（キャッチフレーズ）を取得してシェアテキストに使用
+        const topResultCatchphrase = sortedResultsForShare ? sortedResultsForShare[0].title : '証券口座'; 
+        return `私の証券口座診断結果は「${topResultCatchphrase}」でした！あなたも1分で最適な証券口座を診断しよう！`;
     };
 
     if (shareXBtn) {

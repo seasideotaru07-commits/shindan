@@ -81,19 +81,17 @@
                 
                 <!-- 結果コンテンツ全体を囲むGlassmorphismカード -->
                 <div class="result-container glass-card mb-4">
-                    <!-- トップマッチヘッダー -->
-                    <div class="top-match-header">
-
-                        <h3 id="result-type-title" class="result-type-title">タイプタイトル</h3>
-                        <div class="result-description-box">
-                            <p id="result-description">全体の説明文が入ります。</p>
-                        </div>
-                        <p class="suggestion-text">あなたにおすすめのサービス</p>
+                    <!-- トップマッチ (1位専用エリア) -->
+                    <div id="top-match-container" class="top-match-area">
+                        <!-- Javascriptで1位の結果を生成 -->
                     </div>
 
-                    <!-- おすすめランキング (Top 3) -->
+                    <!-- おすすめランキング (2位、3位) -->
+                    <div class="other-ranking-header">
+                        <p class="suggestion-text">その他のオススメ</p>
+                    </div>
                     <div id="ranking-container" class="ranking-list">
-                        <!-- Javascriptで生成 -->
+                        <!-- Javascriptで2位、3位を生成 -->
                     </div>
                 </div>
                 
